@@ -1,0 +1,35 @@
+services:
+  web:
+    build: .
+    ports:
+      - "0.0.0.0:18002:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+  api:
+    build: ./api
+    volumes:
+      - pricing_data:/data
+    environment:
+      DATA_FILE: /data/pricing.json
+      DATABASE_URL: sqlite:////data/app.db
+    expose: ["8000"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+  crawler:
+    build: ./crawler
+    volumes:
+      - pricing_data:/data
+    environment:
+      DATA_DIR: /data
+      CRAWL_INTERVAL_SECONDS: 1800
+      REQUEST_DELAY_SECONDS: 5
+    restart: unless-stopped
+volumes:
+  pricing_data:
+
