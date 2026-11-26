@@ -1,0 +1,33 @@
+# CodeFarmer source repository boundaries
+/agent-platform/
+/plugins/
+/desktop-agent-v1/
+/short-drama/
+/comfyprj/
+/vehicle-perception-poc/
+/video-merger/
+/skillhub-release/
+/test/
+/WORKSPACE.md
+
+# Local configuration and runtime data
+.env
+.env.*
+!.env.example
+data/
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# Python and frontend build artefacts
+__pycache__/
+*.py[cod]
+web/node_modules/
+web/dist/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
